@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Stock Market Game</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/bower_components/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="/bower_components/morris.js/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="/bower_components/raphael/raphael.min.js"></script>
+    <script src="/bower_components/morris.js/morris.min.js"></script>
+
+    <script src="/bower_components/d3/d3.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/bower_components/sb-admin-2/js/sb-admin-2.js"></script>
+    <script>
+      externalData = JSON.parse('<%- externalData %>');;
+    </script>
+    <!-- Custom UOB JavaScript -->
+    <script src="/custom.js"></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="page-wrapper">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h1 class="page-header" id = "Title"></h1>
+              </div>
+          </div>
+
+          <div class="row">
+
+
+                <!-- LOCAL INFORMATION -->
+                <div class="col-sm-12">
+                    <div class="well">
+                        <h3><span class="fa fa-user"></span> Local</h3>
+
+                            <p>
+                                <strong>id</strong>: <%= user._id %><br>
+                                <strong>email</strong>: <%= user.local.email %><br>
+
+                            </p>
+
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="well">
+                    <h3><span class="fa fa-cog"></span>Game</h3>
+                    <p>
+                      <strong>id</strong>: <%= game._id %>
+                      <strong>current month</strong>: <%= game.game.currentMonth %>
+                      <strong>currency</strong>: <%= game.game.currency %>
+                      <strong>transaction fee</strong>: <%= game.game.transactionFee %>
+                      <strong>starting funds</strong>: <%= game.game.startingFunds %>
+                      <strong>trade limit</strong>: <%= game.game.tradeLimit %>
+
+                    </p>
+                    <p><strong>game data:</strong><br>
+                    <p>
+                      <%= JSON.stringify(game.game.gameData) %>
+                    </p>
+                  </div>
+                </div>
+
+
+
+          <div class="col-lg-12">
+            <div class="panel panel-primary">
+
+              <div class="panel-heading">
+                Changes From Last Month
+              </div>
+
+              <div class="panel-body">
+              <!-- Total Asset Tracker -->
+                <div class="col-lg-6 hidden-md hidden-sm hidden-xs ">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      Total Asset Tracker
+                    </div>
+                    <div class="panel-body">
+                      <div id="Total-Tracker" style="height:280px"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /Total Asset Tracker -->
+
+
+                <!-- Money summary -->
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+
+                <div class=" Table-Box-Combo" >
+                  <div class="col-lg-6 col-sm-6 col-xs-12" >
+
+
+                      <div class="panel panel-default panel-horizontal">
+                        <div class="panel-heading">
+                          Funds
+                        </div>
+                        <div class="panel-body">
+                          <h4 id="Last-Funds"></h4>
+                        </div>
+                      </div>
+
+
+
+                      <div class="panel panel-default panel-horizontal">
+                        <div class="panel-heading">
+                          Assets
+                        </div>
+                        <div class="panel-body">
+                          <h4 id="Last-Assets"></h4>
+                        </div>
+                      </div>
+
+
+                  </div>
+
+                    <div class="col-lg-6 col-sm-6 col-xs-12">
+                      <div class="table-responsive">
+                          <table class="table table-bordered" id="Last-Table">
+                              <thead>
+                                  <tr class="active">
+                                      <th>Item</th>
+                                      <th>Change</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- /Money Summary -->
+
+
+              </div>
+            </div>
+            <!-- /Changes from last month -->
+
+          </div>
+          </div>
+          <!-- /changes from last month .row -->
+
+          <!-- Current Portfolio .row -->
+          <div class="row">
+          <div class="col-lg-12">
+            <div class="panel panel-primary">
+
+              <div class="panel-heading">
+                Current Portfolio
+              </div>
+
+              <div class="panel-body">
+                <!-- Shares -->
+                <div class="col-lg-6"  id="Shares-Panel">
+                <div class="panel panel-default" >
+
+                  <div class="panel-heading">
+                    Shares
+                  </div>
+
+                  <div class="panel-body">
+                    <div class="col-lg-6 hidden-md hidden-sm hidden-xs ">
+                      <div id="Shares-Donut"></div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                      <div class="table-responsive">
+                          <table class="table table-bordered" id="Shares-Table">
+                              <thead>
+                                  <tr class="active">
+                                      <th>Asset</th>
+                                      <th>Number</th>
+                                      <th>Total Value</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+                </div>
+                <!-- /Shares -->
+
+                <!-- Shorts -->
+              <div class="col-lg-6 col-sm-12 col-xs-12" id="Shorts-Panel">
+                <div class="panel panel-default" >
+
+                  <div class="panel-heading">
+                    Shorts
+                  </div>
+
+                  <div class="panel-body">
+
+                    <div class="col-lg-6 hidden-md hidden-sm hidden-xs ">
+                      <div id="Shorts-Donut"></div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                      <div class="table-responsive">
+                          <table class="table table-bordered" id="Shorts-Table">
+                              <thead>
+                                  <tr class="active">
+                                      <th>Asset</th>
+                                      <th>Number</th>
+                                      <th>Total Value</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+                <!-- /Shorts -->
+
+              </div>
+
+            </div>
+            <!-- /Current Portfolio -->
+          </div>
+          </div>
+          <!-- /Current Portfolio .row -->
+
+
+
+
+          <!-- Update Portfolio .row -->
+          <div class="row">
+          <div class="col-lg-12">
+            <div class="panel panel-primary">
+
+              <div class="panel-heading">
+                Update Portfolio
+              </div>
+
+              <div class="panel-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#Buy" data-toggle="tab">Buy</a>
+                    </li>
+                    <li><a href="#Sell" data-toggle="tab">Sell</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div class="tab-pane fade in active" id="Buy">
+
+                    <br>
+
+                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                      <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left:0">
+                        <div class="input-group inline-group" style="width:100%" id="Buy-Input">
+                          <select class="selectpicker form-control" style="width: 30%" data-live-search="true">
+                          </select>
+
+                          <input type="text" style="width: 70%" class="form-control" placeholder="Number to buy">
+                        </div>
+                        <br>
+                      </div>
+
+                      <div class="Table-Box-Combo">
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                          <div class="table-responsive">
+                              <table class="table table-bordered" id="Buy-Table">
+                                  <thead>
+                                      <tr class="active">
+                                          <th>Item</th>
+                                          <th>Cost</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                        <div class="panel panel-default panel-horizontal">
+                          <div class="panel-heading">
+                            Resulting Funds
+                          </div>
+                          <div class="panel-body">
+                            <h4 id="Buy-Resulting-Funds"></h4>
+                          </div>
+                        </div>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                        <div class="panel panel-default panel-horizontal">
+                          <div class="panel-heading">
+                            Resulting Asset
+                          </div>
+                          <div class="panel-body">
+                            <h4 id="Buy-Resulting-Assets"></h4>
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <button type="button" class="btn btn-primary btn-lg btn-block disabled" id="Buy-Button">Buy Option</button>
+                    </div>
+
+
+                    <div class="col-lg-6 hidden-md hidden-sm hidden-xs " >
+                      <ul class="list-group Session-History">
+                        <li class="list-group-item active"><h3 style="margin-top:0">Session History</h3></li>
+
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade in" id="Sell">
+
+                    <br>
+
+                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                      <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left:0">
+                        <div class="input-group inline-group" style="width:100%" id="Sell-Input">
+                          <select class="selectpicker form-control" style="width: 30%" data-live-search="true">
+                          </select>
+
+                          <input type="text" style="width: 70%" class="form-control" placeholder="Number to sell">
+                        </div>
+                        <br>
+                      </div>
+
+                      <div class="col-lg-6 col-sm-6 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="Sell-Table">
+                                <thead>
+                                    <tr class="active">
+                                        <th>Item</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 col-sm-6 col-xs-12">
+                      <div class="panel panel-default panel-horizontal">
+                        <div class="panel-heading">
+                          Resulting Funds
+                        </div>
+                        <div class="panel-body">
+                          <h4 id="Sell-Resulting-Funds"></h4>
+                        </div>
+                      </div>
+                      </div>
+
+                      <div class="col-lg-6 col-sm-6 col-xs-12">
+                      <div class="panel panel-default panel-horizontal">
+                        <div class="panel-heading">
+                          Resulting Asset
+                        </div>
+                        <div class="panel-body">
+                          <h4 id="Sell-Resulting-Assets"></h4>
+                        </div>
+                      </div>
+                      </div>
+
+                      <button type="button" class="btn btn-primary btn-lg btn-block disabled" id="Sell-Button">Sell Option</button>
+                    </div>
+
+                    <div class="col-lg-6 hidden-md hidden-sm hidden-xs " >
+                      <ul class="list-group Session-History">
+                        <li class="list-group-item active"><h3 style="margin-top:0">Session History</h3></li>
+
+                      </ul>
+                    </div>
+                  </div>
+
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <!-- /Update Portfolio -->
+          </div>
+          <!-- /Update Portfolio .row -->
+
+          <!-- Market .row -->
+          <div class="row">
+          <div class="col-lg-12">
+            <div class="panel panel-primary">
+
+              <div class="panel-heading">
+                Market
+              </div>
+
+              <div class="panel-body">
+
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+                  <div class="table-responsive">
+                      <table class="table table-hover table-bordered" id="Market-Table">
+                          <thead>
+                              <tr>
+                                  <th>Option</th>
+                                  <th>Value</th>
+                                  <th>Change</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                  </div>
+                </div>
+
+                <div class="col-lg-6 hidden-sm hidden-md hidden-xs">
+                  <div class="panel panel-default">
+                    <div class="panel-heading"  id="Market-Heading">
+                    </div>
+                    <div class="panel-body">
+                      <div class="chart" style="height:525px" id="Market-Chart"></div>
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+            <!-- /Market -->
+          </div>
+          </div>
+          <!-- /Market .row -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+</body>
+
+</html>

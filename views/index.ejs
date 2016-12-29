@@ -1,0 +1,68 @@
+<!-- views/index.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Foot Massage</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; }
+
+        .code {
+          width: 7em;
+          float: left;
+        }
+
+        .sep {
+          float: left;
+          padding : 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+  <h1><span class="fa fa-gift"></span> Claim your free foot massage</h1>
+
+  <p>Enter your voucher code below</p>
+
+  <form action="/codes/redeem" method="post">
+      <div class="form-group">
+          <label>Code</label>
+          <div class="container">
+            <div class="row">
+          <input type="text" class="form-control code" size="4" maxlength="5" name="code1" id="code1" onkeyup="moveOnMax(this,document.getElementById('code2'))"> <div class='sep'>-</div>
+          <input type="text" class="form-control code" size="4" maxlength="5" name="code2" id="code2" onkeyup="moveOnMax(this,document.getElementById('code3'))"> <div class='sep'>-</div>
+          <input type="text" class="form-control code" size="4" maxlength="5" name="code3" id="code3" onkeyup="moveOnMax(this,document.getElementById('code4'))"> <div class='sep'>-</div>
+          <input type="text" class="form-control code" size="4" maxlength="5" name="code4" id="code4" onkeyup="moveOnMax(this,document.getElementById('code5'))"> <div class='sep'>-</div>
+          <input type="text" class="form-control code" size="4" maxlength="5" name="code5" id="code5" onkeyup="moveOnMax(this,document.getElementById('redeem'))">
+        </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" id="redeem">Redeem</button>
+  </form>
+
+  <% if (errorMessage.length > 0) { %>
+      <div class="alert alert-danger">Error: <%= errorMessage %></div>
+  <% } %>
+  <% if (successMessage.length > 0) { %>
+      <div class="alert alert-success">Success: <%= successMessage %></div>
+  <% } %>
+
+  <hr>
+
+  <p>Need an account? <a href="/signup">Signup</a></p>
+  <p>Or go <a href="/login">Login</a>.</p>
+  <p>View active codes <a href="/codes">Codes</a>.</p>
+
+</div>
+<script language="javascript" type="text/javascript">
+function moveOnMax(field, nextFieldID) {
+  if (field.value.length >= field.maxLength) {
+    nextFieldID.focus();
+  }
+}
+</script>
+</body>
+</html>

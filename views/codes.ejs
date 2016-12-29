@@ -1,0 +1,64 @@
+<!-- views/games.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Codes</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span>Codes</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/" class="btn btn-default btn-sm">Redeem</a>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>isAdmin</strong>: <%= user.local.isAdmin %><br>
+
+                    </p>
+
+            </div>
+        </div>
+
+    </div>
+    <strong>Codes list</strong>
+    <div><div style="float:left; width: 50%"> Showing <strong><%=codesList.length%></strong> codes</div><div style="float: right; width: 50%"><a href="/codes/new" class="btn btn-default btn-sm">New Code</a></div></div>
+
+    <!-- show any messages that come back with authentication -->
+    <div class="container">
+      <% if (errorMessage.length > 0) { %>
+        <div class="alert alert-danger">Error: <%= errorMessage %></div>
+    <% } %>
+
+    <% if (successMessage.length > 0) { %>
+        <div class="alert alert-success">Success: <%= successMessage %></div>
+    <% } %>
+    </div>
+    <ul>
+      <% for(var i=0; i<codesList.length; i++) {%>
+        <li><%= codesList[i]._id %> - <%= codesList[i].key.plain %>
+        <a href="/codes/<%= codesList[i].key.plain %>/remove" class="btn btn-default btn-sm">Delete</a>
+      </li>
+      <% } %>
+    </ul>
+
+
+</div>
+
+</body>
+</html>

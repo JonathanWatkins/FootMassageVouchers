@@ -1,0 +1,71 @@
+<!-- views/manage.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>isAdmin</strong>: <%= user.local.isAdmin %>
+                    </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <p>
+      <strong>id</strong>: <%= game._id %>
+      <strong>current month</strong>: <%= game.game.currentMonth %>
+      <strong>currency</strong>: <%= game.game.currency %>
+      <strong>transaction fee</strong>: <%= game.game.transactionFee %>
+      <strong>starting funds</strong>: <%= game.game.startingFunds %>
+      <strong>trade limit</strong>: <%= game.game.tradeLimit %>
+
+    </p>
+    <p><strong>game data:</strong><br>
+    <p>
+      <%= JSON.stringify(game.game.gameData) %>
+    </p>
+    <p>
+    <a href="/games/<%= game._id %>/next" class="btn btn-default btn-sm">Next Month</a>
+    <a href="/games/<%= game._id %>/restart" class="btn btn-default btn-sm">Restart</a>
+    <a href="/games/<%= game._id %>/remove" class="btn btn-default btn-sm">Delete</a>
+  </p>
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span>Current players</h3>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
