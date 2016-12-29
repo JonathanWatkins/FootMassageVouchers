@@ -1,4 +1,5 @@
-# StockMarket Game
+
+# Foot Massage Vouchers App
 
 Uses MongoDB for the database.
 
@@ -57,6 +58,6 @@ Or, if you don't want/need launchctl, you can just run:
 From the above run `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist`
  to start mongodb.
 
- Once mongodb is running you can start the Stock Market Game by running
+ Once mongodb is running you can start the Foot Massage Voucher app by running
 
  `node server.js`
